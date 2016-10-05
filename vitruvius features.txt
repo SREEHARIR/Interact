@@ -1,0 +1,68 @@
+// Avateering (Unity)
+Avateering.Update(model, body);
+
+// Bitmap Generators
+var bitmap = colorFrame.ToBitmap();
+var bitmap = depthFrame.ToBitmap();
+var bitmap = infraredFrame.ToBitmap();
+
+// Bitmap Capture
+bitmap.Save("Capture.png");
+
+// Background Removal
+var bitmap = colorFrame.GreenScreen(depthFrame, bodyIndexFrame);
+
+// Closest Body
+var body = bodyFrame.Bodies().Closest();
+
+// Body Height
+double height = body.Height();
+
+// Body Visualization
+viewer.DrawBody(body);
+
+// HD Face with properties
+Face face = faceFrame.Face();
+var nose = face.Nose;
+var mouth = face.Mouth;
+var chin = face.Chin;
+var jaw = face.Jaw;
+var eyeLeft = face.EyeLeft;
+var eyeRight = face.EyeRight;
+var cheekLeft = face.CheekLeft;
+var cheekRight = face.CheekRight;
+var forehead = face.Forehead;
+
+// Angles between joints
+double angle = elbow.Angle(shoulder, wrist);
+double angle = elbow.Angle(shoulder, wrist, Axis.Z);
+double radians = angle.ToRadians();
+double degrees = radians.ToDegrees();
+
+// Automatic Coordinate Mapping
+var point = joint.Position.ToPoint(Visualization.Color);
+
+// Gesture detection
+void GestureRecognized(object sender, GestureEventArgs e)
+{
+    var gesture = e.GestureType;
+
+    switch (gesture)
+    {
+       case (GestureType.JointHands): break;
+       case (GestureType.Menu): break;
+       case (GestureType.SwipeDown): break;
+       case (GestureType.SwipeLeft): break;
+       case (GestureType.SwipeRight): break;
+       case (GestureType.SwipeUp): break;
+       case (GestureType.WaveLeft): break;
+       case (GestureType.WaveRight): break;
+       case (GestureType.ZoomIn): break;
+       case (GestureType.ZoomOut): break;
+    }
+}
+
+// XAML Controls
+KinectViewer        // Displays streams and skeletons.
+KinectAngle         // Displays an arc.
+KinectJointSelector // Allows you to select a joint visually.
