@@ -29,61 +29,39 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
-namespace KinectWindowsUI
+using Microsoft.Kinect;
+
+namespace LightBuzz.Vitruvius.Gestures
 {
     /// <summary>
-    /// Represents the predefined gesture types.
+    /// The first part of a <see cref="GestureType.Menu"/> gesture.
     /// </summary>
-    public enum GestureType
+    public class MenuSegment1 : IGestureSegment
     {
         /// <summary>
-        /// Hands joined in front of chest.
+        /// Updates the current gesture.
         /// </summary>
-        JoinedHands,
+        /// <param name="body">The body.</param>
+        /// <returns>A GesturePartResult based on whether the gesture part has been completed.</returns>
+        public GesturePartResult Update(Body body)
+        {
+            // Left and right hands below hip
+            if (body.Joints[JointType.HandLeft].Position.Y < body.Joints[JointType.SpineBase].Position.Y && body.Joints[JointType.HandRight].Position.Y < body.Joints[JointType.SpineBase].Position.Y)
+            {
+                // left hand 0.3 to left of center hip
+                if (body.Joints[JointType.HandLeft].Position.X < body.Joints[JointType.SpineBase].Position.X - 0.3)
+                {
+                    // left hand 0.2 to left of left elbow
+                    if (body.Joints[JointType.HandLeft].Position.X < body.Joints[JointType.ElbowLeft].Position.X - 0.2)
+                    {
+                        return GesturePartResult.Succeeded;
+                    }
+                }
 
-        /// <summary>
-        /// Waving using the right hand.
-        /// </summary>
-        WaveRight,
+                return GesturePartResult.Undetermined;
+            }
 
-        /// <summary>
-        /// Waving using the left hand.
-        /// </summary>
-        WaveLeft,
-
-        /// <summary>
-        /// Hand slightly bent above hip (XBOX-like gesture).
-        /// </summary>
-        Menu,
-
-        /// <summary>
-        /// Hand moved horizontally from right to left.
-        /// </summary>
-        SwipeLeft,
-
-        /// <summary>
-        /// Hand moved horizontally from left to right.
-        /// </summary>
-        SwipeRight,
-
-        /// <summary>
-        /// Hand moved vertically from hip center to head.
-        /// </summary>
-        SwipeUp,
-
-        /// <summary>
-        /// Hand moved vertically from head to hip center.
-        /// </summary>
-        SwipeDown,
-
-        /// <summary>
-        /// Both hands extended closer to the chest.
-        /// </summary>
-        ZoomIn,
-
-        /// <summary>
-        /// Both hands extended farther from the chest.
-        /// </summary>
-        ZoomOut
+            return GesturePartResult.Failed;
+        }
     }
 }
